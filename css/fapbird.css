@@ -5,7 +5,7 @@ div {
 .container {
     margin-right: auto;
     margin-left: auto;
-    width: 400px;
+    width: 288px;
 
     border: 1px solid darkgrey;
 }
@@ -13,6 +13,6 @@ div {
 #gameContainer {
     margin-right: auto;
     margin-left: auto;
-    width: 400px;
-    height: 640px;
+    width: 288px;
+    height: 512px;
 }

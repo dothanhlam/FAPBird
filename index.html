@@ -15,7 +15,7 @@
        </div>
         <script type="text/javascript">
             window.onload = function() {
-                var game = new Phaser.Game(400, 640, Phaser.AUTO, 'gameContainer');
+                var game = new Phaser.Game(288, 512, Phaser.AUTO, 'gameContainer');
                 game.state.add('Preloader', FAPBird.PreLoader);
                 game.state.add('GamePlay', FAPBird.GamePlay);
                 game.state.start('Preloader');

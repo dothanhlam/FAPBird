@@ -14,6 +14,13 @@ FAPBird.PreLoader = function(game) {
 FAPBird.PreLoader.prototype = {
     preload: function() {
         this.load.image('FAP_BIRD', 'assets/fuufap.png');
+        this.load.image('BACKGROUND_DAYLIGHT', 'assets/background-daylight.png');
+        this.load.image('GET_READY','assets/get-ready.png');
+        this.load.image('TAP_TAP','assets/tap-tap.png');
+        this.load.image('LANDING','assets/landing.png');
+        this.load.image('UP_PIPE','assets/up-pipe.png');
+        this.load.image('DOWN_PIPE','assets/down-pipe.png');
+
     },
 
     create: function() {
