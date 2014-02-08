@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>FAP Bird - another Flappy Bird</title>
+        <script src="libs/phaser.io/phaser.js"></script>
+        <script src="src/Preloader.js"></script>
+        <script src="src/GamePlay.js"></script>
+        <link rel="stylesheet" href="css/fapbird.css" type="text/css" >
+
+    </head>
+    <body>
+        <div class="container">
+            <div id="gameContainer"></div>
+       </div>
+        <script type="text/javascript">
+            window.onload = function() {
+                var game = new Phaser.Game(400, 640, Phaser.AUTO, 'gameContainer');
+                game.state.add('Preloader', FAPBird.PreLoader);
+                game.state.add('GamePlay', FAPBird.GamePlay);
+                game.state.start('Preloader');
+            }
+        </script>
+    </body>
+</html>
