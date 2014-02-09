@@ -7,28 +7,29 @@
  */
 
 FAPBird = {};
-FAPBird.PreLoader = function(game) {
+FAPBird.PreLoader = function (game) {
 
 };
 
 FAPBird.PreLoader.prototype = {
-    preload: function() {
+    preload: function () {
         this.load.image('FAP_BIRD', 'assets/fuufap.png');
         this.load.image('BACKGROUND_DAYLIGHT', 'assets/background-daylight.png');
-        this.load.image('GET_READY','assets/get-ready.png');
-        this.load.image('TAP_TAP','assets/tap-tap.png');
-        this.load.image('LANDING','assets/landing.png');
-        this.load.image('UP_PIPE','assets/up-pipe.png');
-        this.load.image('DOWN_PIPE','assets/down-pipe.png');
-
+        this.load.image('GET_READY', 'assets/get-ready.png');
+        this.load.image('TAP_TAP', 'assets/tap-tap.png');
+        this.load.image('LANDING', 'assets/landing.png');
+        this.load.image('UP_PIPE', 'assets/up-pipe.png');
+        this.load.image('DOWN_PIPE', 'assets/down-pipe.png');
+        this.load.image('GAME_OVER', 'assets/game-over.png');
+        this.load.image('PLAY_BUTTON', 'assets/play-button.png');
     },
 
-    create: function() {
+    create: function () {
         this.initGameSettings();
         this.game.state.start('GamePlay');
     },
 
-    initGameSettings: function() {
+    initGameSettings: function () {
         this.game.input.maxPointers = 1;
         this.game.stage.disableVisibilityChange = true;
         this.game.stage.backgroundColor = 0x71C5CF;

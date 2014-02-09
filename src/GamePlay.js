@@ -5,7 +5,7 @@
  * Time: 9:23 PM
  * To change this template use File | Settings | File Templates.
  */
-FAPBird.GamePlay = function(game) {
+FAPBird.GamePlay = function (game) {
     fapBird = null;
     FAP_BIRD = "FAP_BIRD";
     FAPBIRD_SIZE = 32;
@@ -13,7 +13,7 @@ FAPBird.GamePlay = function(game) {
     STAGE_HEIGHT = 512;
     fapBirdTween = null;
 
-    BOUND_Y = STAGE_HEIGHT - FAPBIRD_SIZE  / 2;
+    BOUND_Y = STAGE_HEIGHT - FAPBIRD_SIZE / 2;
 
     gravity = 0.6;
     wingPower = 5;
@@ -26,7 +26,7 @@ FAPBird.GamePlay = function(game) {
     isPlaying = false;
     gainFlight = 0;
     floorPosition = BOUND_Y - 112;
-    pipeHole = 100;
+    pipeHole = 150;
     pipePadding = 50;
     isFallen = false;
     isReady = true;
@@ -51,105 +51,107 @@ FAPBird.GamePlay = function(game) {
 
     UP_PIPE = 'UP_PIPE';
     DOWN_PIPE = 'DOWN_PIPE';
+
+    GAME_OVER = "GAME_OVER";
+    PLAY_BUTTON = "PLAY_BUTTON";
+    gameOverScreen = null;
 };
 
 
 FAPBird.GamePlay.prototype = {
 
-    create: function() {
+    create: function () {
         this.createBackground();
         this.createFAPBird();
     },
 
-    update: function() {
+    update: function () {
         var fallingSpeed = 0;
         var blockIndex = 0;
         if (isReady) {
             isReady = false;
             if (isPlaying) {
-               if (gainFlight > 0) {
-                   gainFlight --;
-                   vertSpeed +=  wingPower;
-                   if (vertSpeed >= vertRoofing) {
-                       fallingSpeed = vertRoofing - vertSpeed;
-                       birdVerticleSpeed += vertRoofing;
-                       vertSpeed -= fallingSpeed;
-                   }
-                   else {
-                       birdVerticleSpeed += vertSpeed;
-                   }
-               }
+                if (gainFlight > 0) {
+                    gainFlight--;
+                    vertSpeed += wingPower;
+                    if (vertSpeed >= vertRoofing) {
+                        fallingSpeed = vertRoofing - vertSpeed;
+                        birdVerticleSpeed += vertRoofing;
+                        vertSpeed -= fallingSpeed;
+                    }
+                    else {
+                        birdVerticleSpeed += vertSpeed;
+                    }
+                }
                 birdVerticleSpeed -= gravity;
-                if ((((birdVerticleSpeed > 0)) && ((birdVerticleSpeed > maxVertSpeedUp)))){
+                if ((((birdVerticleSpeed > 0)) && ((birdVerticleSpeed > maxVertSpeedUp)))) {
                     birdVerticleSpeed = maxVertSpeedUp;
                 }
                 else {
-                    if ((((birdVerticleSpeed < 0)) && ((birdVerticleSpeed < maxVertSpeedDown)))){
+                    if ((((birdVerticleSpeed < 0)) && ((birdVerticleSpeed < maxVertSpeedDown)))) {
                         birdVerticleSpeed = maxVertSpeedDown;
                     }
                 }
 
-                if (birdVerticleSpeed == 0){
+                if (birdVerticleSpeed == 0) {
                     fapBird.rotation = 0;
                     //fap fap fap
                 }
                 else {
-                    if ((((birdVerticleSpeed > 0)) && ((birdVerticleSpeed <= maxWing)))){
-                        fapBird.rotation = ((birdVerticleSpeed / maxWing) * -35* (Math.PI / 180));
+                    if ((((birdVerticleSpeed > 0)) && ((birdVerticleSpeed <= maxWing)))) {
+                        fapBird.rotation = ((birdVerticleSpeed / maxWing) * -35 * (Math.PI / 180));
                         // fap fap
                     }
                     else {
-                        if ((((birdVerticleSpeed > 0)) && ((birdVerticleSpeed >= maxWing)))){
+                        if ((((birdVerticleSpeed > 0)) && ((birdVerticleSpeed >= maxWing)))) {
                             fapBird.rotation = -35;
-                           //fap fap
-
+                            //fap fap
                         }
                         else {
-                            if (birdVerticleSpeed < 0){
-                                fapBird.rotation = ((birdVerticleSpeed / maxVertSpeedDown) * 90* (Math.PI / 180));
+                            if (birdVerticleSpeed < 0) {
+                                fapBird.rotation = ((birdVerticleSpeed / maxVertSpeedDown) * 90 * (Math.PI / 180));
                                 //wing middle;
-
                             }
                         }
                     }
                 }
 
-                if (birdVerticleSpeed == 0){
+                if (birdVerticleSpeed == 0) {
                     fapBird.rotation = 0;
                     //fap fap
-
                 }
                 else {
-                    if (birdVerticleSpeed > 0){
-                        fapBird.rotation = ((birdVerticleSpeed / maxVertSpeedUp) * -35* (Math.PI / 180));
+                    if (birdVerticleSpeed > 0) {
+                        fapBird.rotation = ((birdVerticleSpeed / maxVertSpeedUp) * -35 * (Math.PI / 180));
                         //fap fap
-
-                    } else {
-                        if (birdVerticleSpeed < 0){
-                            fapBird.rotation = ((birdVerticleSpeed / maxVertSpeedDown) * 90* (Math.PI / 180));
-                           // wing middle;
-
+                    }
+                    else {
+                        if (birdVerticleSpeed < 0) {
+                            fapBird.rotation = ((birdVerticleSpeed / maxVertSpeedDown) * 90 * (Math.PI / 180));
+                            // wing middle;
                         }
                     }
                 }
                 fapBird.y -= birdVerticleSpeed;
 
-                if (fapBird.y < - FAPBIRD_SIZE / 2){
-                    fapBird.y = - FAPBIRD_SIZE / 2;
+                if (fapBird.y < -FAPBIRD_SIZE / 2) {
+                    fapBird.y = -FAPBIRD_SIZE / 2;
                 }
 
-                if ((fapBird.y >= floorPosition - fapBird.height / 2) && !this.isFallen){
+                if ((fapBird.y >= floorPosition - fapBird.height / 2) && !this.isFallen) {
                     fapBird.y = floorPosition - (fapBird.height / 2);
                     this.backStop = false;
                     this.isFallen = true;
+                    this.gameOver();
                 }
                 else {
-                    if ((fapBird.y >= floorPosition - fapBird.height / 2) && this.isFallen){
+                    if ((fapBird.y >= floorPosition - fapBird.height / 2) && this.isFallen) {
                         fapBird.y = (floorPosition - (fapBird.height / 2));
                         this.backStop = false;
+                        this.gameOver();
                     }
                     else {
-                        if (!this.isFallen){
+                        if (!this.isFallen) {
                             this.backStop = true;
                         }
                     }
@@ -162,16 +164,16 @@ FAPBird.GamePlay.prototype = {
 
                 if (!this.isFallen) {
                     this.moveBlocks();
-                    while(blockIndex < movingBlocks.length) {
+                    while (blockIndex < movingBlocks.length) {
                         if (this.isHittingBlock(fapBird, movingBlocks[blockIndex])) {
                             this.isFallen = true;
                             // perform some effect here
                         }
-                        blockIndex ++;
+                        blockIndex++;
                     }
 
                     if (this.backStop) {
-                        if (this.timingPlz > 0){
+                        if (this.timingPlz > 0) {
                             this.timingPlz--;
                         }
                         else {
@@ -179,7 +181,11 @@ FAPBird.GamePlay.prototype = {
                             this.createBlocks();
                         }
                     }
-
+                }
+                else {
+                    if (this.isFallen) {
+                        this.backStop = true;
+                    }
                 }
             }
             isReady = true;
@@ -194,7 +200,7 @@ FAPBird.GamePlay.prototype = {
         }
     },
 
-    createFAPBird: function() {
+    createFAPBird: function () {
         var x = (STAGE_WIDTH - FAPBIRD_SIZE) / 4;
         var y = (STAGE_HEIGHT - FAPBIRD_SIZE) / 2;
         fapBird = this.game.add.sprite(x, y, FAP_BIRD);
@@ -203,19 +209,19 @@ FAPBird.GamePlay.prototype = {
         this.game.input.onDown.add(this.clickHandler, this);
     },
 
-    createBackground:function() {
+    createBackground: function () {
         background = this.game.add.sprite(0, 0, BACKGROUND_DAYLIGHT);
         introScreen = this.game.add.group();
-        getReady = introScreen.create((STAGE_WIDTH - 192)/2, 56 * 2, GET_READY);
+        getReady = introScreen.create((STAGE_WIDTH - 192) / 2, 56 * 2, GET_READY);
         tap = introScreen.create((STAGE_WIDTH - 116) / 2, getReady.y + 108, TAP_TAP);
         landing = this.game.add.sprite(0, STAGE_HEIGHT - 112, LANDING);
     },
 
-    createBlocks: function() {
+    createBlocks: function () {
         var offset = Math.floor((Math.random() * ((floorPosition - (pipePadding * 2)) - pipeHole)));
 
-        var pipeUp = this.game.add.sprite(320,  pipeHole + offset +pipePadding, 'UP_PIPE');
-        var pipeDown = this.game.add.sprite(320,offset + pipePadding - 320, 'DOWN_PIPE');
+        var pipeUp = this.game.add.sprite(320, pipeHole + offset + pipePadding, 'UP_PIPE');
+        var pipeDown = this.game.add.sprite(320, offset + pipePadding - 320, 'DOWN_PIPE');
 
         if (movingBlocks == null) {
             movingBlocks = [];
@@ -228,52 +234,69 @@ FAPBird.GamePlay.prototype = {
         fapBird.bringToTop();
     },
 
-    moveBlocks: function() {
+    moveBlocks: function () {
         var pipeIndex = 0;
-        if (this.backStop){
+        if (this.backStop) {
             while (pipeIndex < movingBlocks.length) {
-                movingBlocks[pipeIndex].x -= 4 ;
-                if (( movingBlocks[pipeIndex].x +  movingBlocks[pipeIndex].width) <= 0){
+                movingBlocks[pipeIndex].x -= 4;
+                if (( movingBlocks[pipeIndex].x + movingBlocks[pipeIndex].width) <= 0) {
                     movingBlocks[pipeIndex].destroy();
                     movingBlocks.splice(pipeIndex, 1);
                     pipeIndex--;
                 }
                 pipeIndex++;
             }
-
         }
     },
 
-    isHittingBlock: function(a, b) {
+    isHittingBlock: function (a, b) {
         var hit1;
         var hit2;
         if ((a.x > b.x && (a.x < (b.x + b.width)) ||
             ((a.x + a.width > b.x) && (a.x + a.width < b.x + b.width)) ||
             ((b.x > a.x && (b.x < a.x + a.width)) ||
-            ((b.x + b.width > a.x) && (b.x + b.width < a.x + a.width))))){
+                ((b.x + b.width > a.x) && (b.x + b.width < a.x + a.width))))) {
             hit1 = true;
         }
         else {
-            if ((a.x == b.x && (a.x + a.width == b.x + b.width))){
+            if ((a.x == b.x && (a.x + a.width == b.x + b.width))) {
                 hit1 = true;
             }
         }
         if ((a.y > b.y && ((a.y < (b.y + b.height)) ||
             ((a.y + a.height) > b.y) && (a.y + a.height < b.y + b.height)) ||
             ((b.y > a.y && (b.y < a.y + a.height)) ||
-            ((b.y + b.height > a.y) && (b.y + b.height < a.y + a.height))))){
+                ((b.y + b.height > a.y) && (b.y + b.height < a.y + a.height))))) {
             hit2 = true;
         }
         else {
-            if ((a.y == b.y && (a.y + a.height == b.y + b.height))){
+            if ((a.y == b.y && (a.y + a.height == b.y + b.height))) {
                 hit2 = true;
             }
         }
         return (hit1 && hit2);
     },
 
-    clickHandler: function(event) {
-        if (!this.isFallen && !this.ISPlaying) {
+    gameOver: function () {
+        if (gameOverScreen == null) {
+            gameOverScreen = this.game.add.group();
+            gameOverScreen.create((STAGE_WIDTH - 202) / 2, 56 * 3, GAME_OVER);
+            var playButton = gameOverScreen.create((STAGE_WIDTH - 113) / 2, 56 * 3 + 67, PLAY_BUTTON);
+            playButton.inputEnabled = true;
+            playButton.events.onInputDown.add(this.replayHandler, this);
+        }
+        else {
+
+        }
+    },
+
+    replayHandler: function (event) {
+        //reloading the page simply
+        location.reload();
+    },
+
+    clickHandler: function (event) {
+        if (!this.isFallen && !this.isPlaying) {
             fapBirdTween.stop();
             this.game.add.tween(introScreen).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
             isPlaying = true;

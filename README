@@ -1,1 +1,23 @@
-This file was created by JetBrains WebStorm 6.0.1 for binding GitHub repository
+About the game
+
+FAPBird, another FlappyBird
+Hating freaky bird
+Hating freaky bird
+Hating freaky bird
+Hating freaky bird
+Hating freaky bird
+
+There 're several F*bird versions out there, I was trying to port another one that using phaser.io and pure javascript
+to see how making this freaky game. You can freely use my source for any purpose.
+
+Installation
+The source comes with nodejs scripting file. If you have installed nodejs already, opening Command Prompt or Console
+
+chdir FAPBird
+nodejs webserver.js
+
+Or you can deploy the source to your own webserver. Mine is Tomcat 7.x ;)
+
+
+FAP FAP FAP your bird
+Thanks
